@@ -13,7 +13,7 @@ def gem(package):
 		for p in package:
 			gem(p)
 	else:
-		sudo("gem -y install %s" % package)
+		sudo("gem install %s" % package)
 
 def upgrade_pip():
 	aptget('python-pip')
