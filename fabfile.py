@@ -15,7 +15,7 @@ def vagrant():
     env.activate = "source bin/activate"
 
 def preflight():
-	global HOME_DIR, SHELL_RC, RVM_DIR, RVM, GIT_RVM, ROOT_DIR
+	global HOME_DIR, SHELL_RC, RVM_DIR, RVM, GIT_RVM, ROOT_DIR, GIT_DIR
 	HOME_DIR="/home/%s" % env.user
 	GIT_DIR=HOME_DIR + "/plainvid"
 	ROOT_DIR=GIT_DIR + "/approot"
