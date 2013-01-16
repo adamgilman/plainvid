@@ -53,9 +53,13 @@ def gem(package,ruby_version="1.9.2"):
     with cd(HOME_DIR):
         run("source %s && rvm use %s && gem install %s"%(RVM,ruby_version,package))
 
+def nginx():
+	aptget("nginx")
+
+	sudo("service nginx start")
 
 def build():
-	aptget( ['build-essential', 'curl', 'byobu', 'autoconf', 'bison', 'git-core'] )
-	
-	setup(rails=False)
-	gem('sinatra')
+	#aptget( ['build-essential', 'curl', 'byobu', 'autoconf', 'bison', 'git-core'] )
+	#setup(rails=False)
+	#gem('sinatra')
+
