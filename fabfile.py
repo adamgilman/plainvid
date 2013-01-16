@@ -17,7 +17,9 @@ def vagrant():
 def preflight():
 	global HOME_DIR, SHELL_RC, RVM_DIR, RVM, GIT_RVM, ROOT_DIR
 	HOME_DIR="/home/%s" % env.user
-	ROOT_DIR=HOME_DIR + "/approot"
+	ROOT_DIR=HOME_DIR + "/plainvid/approot"
+	#/home/vagrant/plainvid/approot
+	#/home/vagrant/approot/index.html
 	SHELL_RC=".zshrc"
 	RVM_DIR=os.path.join(HOME_DIR,".rvm")
 	RVM=os.path.join(RVM_DIR,"scripts/rvm")
@@ -70,8 +72,8 @@ def nginx():
 
 def build():
 	preflight()
-	#aptget( ['build-essential', 'curl', 'byobu', 'autoconf', 'bison', 'git-core'] )
-	#setup(rails=False)
-	#gem('sinatra')
+	aptget( ['build-essential', 'curl', 'byobu', 'autoconf', 'bison', 'git-core'] )
+	setup(rails=False)
+	gem('sinatra')
 	nginx()
 
