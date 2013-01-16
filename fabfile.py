@@ -17,7 +17,8 @@ def vagrant():
 def preflight():
 	global HOME_DIR, SHELL_RC, RVM_DIR, RVM, GIT_RVM, ROOT_DIR
 	HOME_DIR="/home/%s" % env.user
-	ROOT_DIR=HOME_DIR + "/plainvid/approot"
+	GIT_DIR=HOME_DIR + "/plainvid"
+	ROOT_DIR=GIT_DIR + "/approot"
 	#/home/vagrant/plainvid/approot
 	#/home/vagrant/approot/index.html
 	SHELL_RC=".zshrc"
@@ -67,8 +68,18 @@ def nginx():
 	nginx_conf = StringIO()
 	nginx_conf.write(temp)
 	put(nginx_conf, "/etc/nginx/nginx.conf", use_sudo=True)
-
 	sudo("service nginx start")
+
+def deploy():
+	preflight()
+	with cd(HOME_DIR):
+		run("git clone https://github.com/adamgilman/plainvid.git")
+
+def redeploy():
+	preflight()
+	with cd(GIT_DIR):
+		run("git pull")	
+
 
 def build():
 	preflight()
