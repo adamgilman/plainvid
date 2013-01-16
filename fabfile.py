@@ -4,6 +4,8 @@ from fabric.decorators import *
 
 from fab_essentials import aptget, pip#, gem
 
+from cStringIO import StringIO
+
 def vagrant():
     env.user = 'vagrant'
     env.hosts = ['127.0.0.1:2222']
@@ -12,15 +14,17 @@ def vagrant():
     env.install_dir = "/vagrant/"
     env.activate = "source bin/activate"
 
-    
-def setup(rvm=True,ruby=True,rails=True):
-	global HOME_DIR, SHELL_RC, RVM_DIR, RVM, GIT_RVM
+def preflight():
+	global HOME_DIR, SHELL_RC, RVM_DIR, RVM, GIT_RVM, ROOT_DIR
 	HOME_DIR="/home/%s" % env.user
+	ROOT_DIR=HOME_DIR + "/approot"
 	SHELL_RC=".zshrc"
 	RVM_DIR=os.path.join(HOME_DIR,".rvm")
 	RVM=os.path.join(RVM_DIR,"scripts/rvm")
 	GIT_RVM = "git://github.com/wayneeseguin/rvm.git"
 
+def setup(rvm=True,ruby=True,rails=True):
+	
 	if rvm:
 	    install_rvm()
 	if ruby:
@@ -56,10 +60,18 @@ def gem(package,ruby_version="1.9.2"):
 def nginx():
 	aptget("nginx")
 
+	temp = file("conf/nginx.conf").read()
+	temp = temp % {'root_dir' : ROOT_DIR}
+	nginx_conf = StringIO()
+	nginx_conf.write(temp)
+	put(nginx_conf, "/etc/nginx/nginx.conf", use_sudo=True)
+
 	sudo("service nginx start")
 
 def build():
+	preflight()
 	#aptget( ['build-essential', 'curl', 'byobu', 'autoconf', 'bison', 'git-core'] )
 	#setup(rails=False)
 	#gem('sinatra')
+	nginx()
 
